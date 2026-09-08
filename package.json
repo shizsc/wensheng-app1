@@ -1,0 +1,18 @@
+{
+  "name": "course-schedule-app",
+  "version": "1.0.0",
+  "description": "一款简洁实用的课程表手机 Web APP，支持 Excel 导入课程数据、周视图课表、今日课程提醒等功能。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@capacitor/android": "^8.5.1",
+    "@capacitor/cli": "^8.5.1",
+    "@capacitor/core": "^8.5.1"
+  }
+}
