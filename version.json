@@ -1,6 +1,1 @@
-{
-  "versionCode": 1,
-  "versionName": "1.0",
-  "apkUrl": "https://github.com/shizsc/wensheng-app1/releases/download/v1.0/app-debug.apk",
-  "releaseNote": "首次发布 - 基础课程表功能"
-}
+{  "versionCode": 2,  "versionName": "1.1",  "apkUrl": "https://github.com/shizsc/wensheng-app1/releases/download/v1.1/app-debug.apk",  "releaseNote": "修复课程不显示，更新第5-14周课程数据"}
