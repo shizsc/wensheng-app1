@@ -1,6 +1,6 @@
 {
-  "versionCode": 3,
-  "versionName": "1.3",
-  "apkUrl": "https://github.com/shizsc/wensheng-app1/releases/download/v1.3/app-debug.apk",
-  "releaseNote": "全新界面设计，五科目配色，修正第9-14周课程数据，修复更新检测与底部导航栏遮挡"
+  "versionCode": 4,
+  "versionName": "1.3.1",
+  "apkUrl": "https://github.com/shizsc/wensheng-app1/releases/download/v1.3.1/app-debug.apk",
+  "releaseNote": "修复全部 36 项审查问题：ES Modules 拆分（15 个模块，main.js 仅 408 行）；数据安全加固（合并/升级原子回滚、快照备份、origin 标记、migrationV131）；JSON 导入不再静默丢弃；replaceAllCourses 防同步异常回滚；Promise.any 改为并行预取+优先级择优（保住 ghproxy 实时源）；加固课程输入校验；时间串预解析缓存不入库；92 项测试全绿。"
 }
