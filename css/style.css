@@ -35,9 +35,11 @@
   --shadow-card-hover: 0 2px 4px rgba(24,28,60,.06), 0 14px 34px rgba(24,28,60,.14);
   --shadow-float: 0 12px 32px rgba(99,102,241,.35);
   --tabbar-bg: rgba(255,255,255,.92);
-  /* 安全区：优先取 Android 原生注入的真实系统栏高度，浏览器端回退到 env() */
+  /* 安全区：优先取 Android 原生注入的真实系统栏高度。
+     Android WebView 的 env(safe-area-inset-*) 常为 0，且部分 ROM 会忽略
+     windowOptOutEdgeToEdgeEnforcement；给 48px 兜底，Java 注入真实值覆盖。 */
   --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-bottom: 48px;
 }
 
 /* ================= 主题变量（深色） ================= */
@@ -71,6 +73,7 @@ body.dark {
   --shadow-card-hover: 0 2px 6px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.55);
   --shadow-float: 0 12px 32px rgba(124,127,245,.35);
   --tabbar-bg: rgba(25,29,49,.94);
+  --safe-bottom: 48px;
 }
 
 /* ================= 基础 ================= */
@@ -92,6 +95,7 @@ button, input, select { font-family: inherit; }
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
+  padding-bottom: var(--safe-bottom);
   overflow: hidden;
   position: relative;
 }
@@ -504,8 +508,10 @@ body.dark .b-tag.one  { background: rgba(56,189,248,.20); color: #BAE6FD; }
   -webkit-backdrop-filter: blur(18px);
   border-top: 1px solid var(--line);
   display: grid; grid-template-columns: repeat(4, 1fr);
-  padding: 6px 10px calc(6px + var(--safe-bottom));
+  padding: 6px 10px 6px;
   position: relative; z-index: 40;
+  /* 安全区由 #app 的 padding-bottom 统一处理，避免重复 */
+  margin-bottom: 0;
 }
 .tab-item {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
