@@ -7,14 +7,16 @@
 const APP_VERSION = '1.3';
 const CURRENT_VERSION = 3; // versionCode，与 version.json 比对
 
-// 更新检测源：按顺序尝试，第一个成功即返回
-// 1) jsDelivr CDN —— 国内可达且最快
-// 2) GitHub 官方 raw —— 官方源，国内网络有波动
-// 3) ghproxy 加速 —— 兜底
+// 更新检测源：按顺序尝试，第一个成功即返回（每个源 6 秒超时）
+// 1) ghproxy 加速 —— 国内可达且内容实时（实测 0.5~0.8s）
+// 2) GitHub 官方 raw —— 官方源，国内网络波动较大
+// 3) ghfast 加速 —— 与 1 不同厂商的加速，避免同时失效
+// 4) jsDelivr CDN —— 兜底；注意其 @main 分支缓存约 12 小时，内容可能滞后
 const VERSION_URLS = [
-  'https://cdn.jsdelivr.net/gh/shizsc/wensheng-app1@main/version.json',
+  'https://ghproxy.net/https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json',
   'https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json',
-  'https://ghproxy.net/https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json'
+  'https://ghfast.top/https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json',
+  'https://cdn.jsdelivr.net/gh/shizsc/wensheng-app1@main/version.json'
 ];
 
 // 版本号：课程数据更新时递增，触发本地强制刷新
@@ -161,7 +163,7 @@ async function fetchVersionInfo() {
   for (const url of VERSION_URLS) {
     try {
       const ctrl = new AbortController();
-      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const timer = setTimeout(() => ctrl.abort(), 6000);
       const res = await fetch(url + '?t=' + Date.now(), {
         cache: 'no-store',
         signal: ctrl.signal
