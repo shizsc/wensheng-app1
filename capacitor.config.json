@@ -1,0 +1,14 @@
+{
+  "appId": "com.wensheng.timetable",
+  "appName": "文盛课程表",
+  "server": {
+    "allowNavigation": [
+      "raw.githubusercontent.com",
+      "ghproxy.net",
+      "ghfast.top",
+      "cdn.jsdelivr.net",
+      "github.com",
+      "objects.githubusercontent.com"
+    ]
+  }
+}

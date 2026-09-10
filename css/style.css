@@ -594,6 +594,49 @@ body.dark .b-tag.one  { background: rgba(56,189,248,.20); color: #BAE6FD; }
 .toast.error { background: rgba(190,24,60,.94); }
 .toast.success { background: rgba(5,150,105,.94); }
 
+/* ================= 站内提醒横幅（P1-03 诚实降级） ================= */
+.reminder-banner {
+  position: fixed;
+  left: 50%; top: calc(10px + var(--safe-top));
+  transform: translateX(-50%) translateY(-16px);
+  max-width: 92vw;
+  background: var(--grad-main);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 10px 16px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-float);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+  z-index: 320;
+  text-align: center;
+}
+.reminder-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ================= 同格多课（P2-05）与撞课徽标 ================= */
+.tt-cell { display: flex; flex-direction: column; gap: 4px; }
+.tt-cell > .block { flex: 1 1 auto; }
+.tt-cell > .cell-empty { flex: 1 1 auto; }
+.clash-badge {
+  font-size: 9.5px; font-weight: 800; letter-spacing: .02em;
+  color: #B45309; background: rgba(245,158,11,.16);
+  border-radius: 6px; padding: 2px 5px; text-align: center;
+}
+body.dark .clash-badge { color: #FCD34D; background: rgba(245,158,11,.22); }
+.tt-cell.clash { border-color: rgba(245,158,11,.5); }
+
+/* ================= 模拟日期预览态（P1-06 灰显标注） ================= */
+body[data-simulated="1"] #page-today .date-hero,
+body[data-simulated="1"] .tt-wrap {
+  filter: grayscale(.35);
+}
+body[data-simulated="1"] #today-sub::after {
+  content: " · 预览";
+  font-weight: 700;
+}
+
 /* ================= 窄屏适配 ================= */
 @media (max-width: 360px) {
   .head-title { font-size: 23px; }

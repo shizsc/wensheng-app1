@@ -6,6 +6,10 @@
   <meta name="theme-color" content="#6366F1">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <!-- 纵深防御（P3-06）：无内联 <script>、无内联事件属性，故 script-src 'self' 安全；
+       style-src 保留 'unsafe-inline' 因 index.html 存在若干内联 style 属性。
+       若真机出现 Capacitor 桥接异常，则回退为不设 CSP（P0-01 的转义仍是主防线）。 -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' https://ghproxy.net https://raw.githubusercontent.com https://ghfast.top https://cdn.jsdelivr.net; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none';">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
   <title>文盛课程表</title>
   <link rel="stylesheet" href="css/style.css">
@@ -188,7 +192,7 @@
         </div>
         <div class="set-row">
           <div class="s-icon si-purple"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5h16M4 12h16M4 17.5h10"/></svg></div>
-          <div class="s-label">每日自动推送课程</div>
+          <div class="s-label">每日提醒（App 内）</div>
           <label class="switch">
             <input type="checkbox" id="setting-daily-reminder">
             <span class="slider"></span>
@@ -196,7 +200,7 @@
         </div>
         <div class="set-row">
           <div class="s-icon si-blue"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3.5 2"/></svg></div>
-          <div class="s-label">推送时间</div>
+          <div class="s-label">提醒时间</div>
           <select id="setting-daily-hour" class="setting-select">
             <option value="6">早上 6:00</option>
             <option value="7" selected>早上 7:00</option>
@@ -208,8 +212,11 @@
         </div>
         <div class="set-row">
           <div class="s-icon si-green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></div>
-          <div class="s-label">立即测试推送</div>
-          <button id="btn-test-notify" class="btn btn-ghost btn-sm">发送</button>
+          <div class="s-label">立即预览提醒</div>
+          <button id="btn-test-notify" class="btn btn-ghost btn-sm">预览</button>
+        </div>
+        <div class="set-row column">
+          <div class="s-hint">提醒仅在 App 打开时显示；关闭 App 后由系统通知推送的能力将在后续版本提供。</div>
         </div>
       </div>
 
@@ -233,6 +240,17 @@
           <button id="btn-refresh-data" class="btn btn-ghost btn-sm">刷新</button>
         </div>
         <div class="set-row">
+          <div class="s-icon si-blue"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 11l4 4 4-4"/><path d="M5 20h14"/></svg></div>
+          <div class="s-label">导出课程（JSON 备份）</div>
+          <button id="btn-export-json" class="btn btn-ghost btn-sm">导出</button>
+        </div>
+        <div class="set-row">
+          <div class="s-icon si-green"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M8 11l4-4 4 4"/><path d="M5 20h14"/></svg></div>
+          <div class="s-label">导入课程（JSON 备份）</div>
+          <button id="btn-import-json" class="btn btn-ghost btn-sm">导入</button>
+        </div>
+        <input type="file" id="file-json" accept=".json,application/json" style="display:none">
+        <div class="set-row">
           <div class="s-icon si-gray"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V5h6v2M6.5 7l1 13h9l1-13"/></svg></div>
           <div class="s-label danger">清空所有课程</div>
           <button id="btn-clear-all" class="btn btn-danger btn-sm">清空</button>
@@ -249,7 +267,7 @@
         <div class="set-row">
           <div class="s-icon si-blue"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v5M12 7.5v.1"/></svg></div>
           <div class="s-label">关于</div>
-          <span class="s-value" id="version-display">文盛课程表 v1.3</span>
+          <span class="s-value" id="version-display"></span>
         </div>
       </div>
 
@@ -266,7 +284,7 @@
       <div class="about-card">
         <div class="about-logo">文</div>
         <div class="about-name">文盛课程表</div>
-        <div class="about-ver">v1.3 · WENSHENGEDUCATION<br>© 2026 文盛教育 · 2027届基础精讲</div>
+        <div class="about-ver" id="about-ver"></div>
       </div>
     </div>
   </section>
@@ -367,8 +385,12 @@
 <!-- 提示消息 -->
 <div id="toast" class="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script src="js/db.js"></script>
-<script src="js/app.js"></script>
+<!-- 站内提醒横幅（P1-03 诚实降级：仅 App 打开时显示） -->
+<div id="reminder-banner" class="reminder-banner" role="status"></div>
+
+<!-- 第三方（classic，先加载，暴露全局 XLSX；本地化，离线可用、无 CVE、无 CDN 劫持面） -->
+<script src="js/lib/xlsx.full.min.js"></script>
+<!-- 应用入口：ES Module。模块脚本天然 defer，会在 DOMContentLoaded 前执行完毕 -->
+<script type="module" src="js/main.js"></script>
 </body>
 </html>
