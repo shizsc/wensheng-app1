@@ -1,6 +1,6 @@
 {
-  "versionCode": 5,
-  "versionName": "1.3.2",
-  "apkUrl": "https://ghproxy.net/https://github.com/shizsc/wensheng-app1/releases/download/v1.3.2/app-debug.apk",
-  "releaseNote": "BugFix：修复底部 Tab 栏被 body overflow:hidden 裁掉导致不可见的布局问题。改 body 为 flex 列容器、#app 改 flex:1 让位 .tab-bar。CSS-only 改动，零功能影响。新增 5 项 CSS 回归测试，防止再回归。"
+  "versionCode": 11,
+  "versionName": "1.3.3",
+  "apkUrl": "https://ghproxy.net/https://github.com/shizsc/wensheng-app1/releases/download/v1.3.3/app-debug.apk",
+  "releaseNote": "数据修正：第9-14周课程表完整覆盖（含用户纠正的3处错位）。xlsx 8 列 → APP JS 88 条，数字电子 -4 到 -12 连续无跳号。DATA_VERSION 8→9，触发合并灌库（不清空用户已有课程）。新增 8 项回归测试锁死边界。新增 v1.3.3 版本号。"
 }
