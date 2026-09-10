@@ -6,7 +6,16 @@
 // === 版本 ===
 const APP_VERSION = '1.3';
 const CURRENT_VERSION = 3; // versionCode，与 version.json 比对
-const VERSION_URL = 'https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json';
+
+// 更新检测源：按顺序尝试，第一个成功即返回
+// 1) jsDelivr CDN —— 国内可达且最快
+// 2) GitHub 官方 raw —— 官方源，国内网络有波动
+// 3) ghproxy 加速 —— 兜底
+const VERSION_URLS = [
+  'https://cdn.jsdelivr.net/gh/shizsc/wensheng-app1@main/version.json',
+  'https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json',
+  'https://ghproxy.net/https://raw.githubusercontent.com/shizsc/wensheng-app1/main/version.json'
+];
 
 // 版本号：课程数据更新时递增，触发本地强制刷新
 const DATA_VERSION = 8;
@@ -147,11 +156,31 @@ function getWeekDates() {
 }
 
 // ================= 更新检测 =================
+// 依次尝试各源，返回第一个成功解析的版本信息；全部失败返回 null
+async function fetchVersionInfo() {
+  for (const url of VERSION_URLS) {
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(url + '?t=' + Date.now(), {
+        cache: 'no-store',
+        signal: ctrl.signal
+      });
+      clearTimeout(timer);
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (data && typeof data.versionCode === 'number') return data;
+    } catch(e) {
+      // 该源不可用，继续尝试下一个
+    }
+  }
+  return null;
+}
+
 async function checkUpdate() {
   try {
-    const res = await fetch(VERSION_URL + '?t=' + Date.now());
-    if (!res.ok) return;
-    const data = await res.json();
+    const data = await fetchVersionInfo();
+    if (!data) return;
     if (data.versionCode > CURRENT_VERSION) {
       const msg = `发现新版本 v${data.versionName}\n\n更新内容：${data.releaseNote || '无'}\n\n是否立即下载？`;
       if (confirm(msg)) {
@@ -596,9 +625,10 @@ function bindActions() {
     btn.textContent = '检查中...';
     btn.disabled = true;
     try {
-      const res = await fetch(VERSION_URL + '?t=' + Date.now());
-      const data = await res.json();
-      if (data.versionCode > CURRENT_VERSION) {
+      const data = await fetchVersionInfo();
+      if (!data) {
+        showToast('检查失败，请检查网络', 'error');
+      } else if (data.versionCode > CURRENT_VERSION) {
         if (confirm(`发现新版本 v${data.versionName}\n\n更新内容：${data.releaseNote || '无'}\n\n是否立即下载？`)) {
           window.open(data.apkUrl, '_system');
         }
