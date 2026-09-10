@@ -1,10 +1,14 @@
 /**
- * default-courses.js — 出厂默认课程数据（89 条，外置）
+ * default-courses.js — 出厂默认课程数据（88 条，外置）
  *
- * 数据与逻辑解耦（P2-08）：内容变更只需改此文件 + 递增 config.DATA_VERSION，
+ * 数据与逻辑解耦（P2-08）：内容变更只需改此文件 + 递增 config.DATA_VERSION,
  * 不必触碰业务代码。条目不含 origin 字段，灌库时由 buildDefaultList() 统一补 'default'。
  *
- * cls: 'both' = 自动化1班+2班（合班） / 'one' = 自动化1班（仅第9–14周）
+ * - 1-8 周 58 条：基础精讲原始排课
+ * - 9-14 周 30 条：真实课表（2026-09-10 v9 灌库版（第9-14周真实课表从 xlsx 合并））
+ *   源数据: templates/课程导入_第9-14周.xlsx
+ *
+ * cls: 'both' = 自动化1班+2班（合班）/ 'one' = 自动化1班（仅第9–14周专业小班课）
  */
 export const DEFAULT_COURSES = [
   // ===== 第1周 (7/13-7/19) =====
@@ -75,44 +79,44 @@ export const DEFAULT_COURSES = [
   { name: '电路-8', day: '周六', time: '9:20-12:20', start: 1, end: 4, teacher: '滕老师', location: '301教室', week: 8 },
 
   // ===== 第9周 (9/7-9/13) · 真实课表 =====
-  { name: '计算机基础-12', day: '周一', time: '9:00-12:00',  start: 1, end: 4,  teacher: '梁老师1',  location: '421教室（西校区）', week: 9,  cls: 'both' },
-  { name: '英语-12',       day: '周一', time: '13:20-16:20', start: 5, end: 8,  teacher: '耿老师',   location: '421教室（西校区）', week: 9,  cls: 'both' },
-  { name: '数字电子-4',    day: '周三', time: '9:20-12:20',  start: 1, end: 4,  teacher: '刘老师13', location: '303教室',           week: 9,  cls: 'one'  },
-  { name: '计算机基础-13', day: '周三', time: '13:40-16:40', start: 5, end: 8,  teacher: '梁老师1',  location: '514教室（西校区）', week: 9,  cls: 'both' },
-  { name: '电路-9',        day: '周四', time: '17:00-20:00', start: 9, end: 11, teacher: '滕老师',   location: '205教室',           week: 9,  cls: 'one'  },
-  { name: '高数-14',       day: '周五', time: '13:40-16:40', start: 5, end: 8,  teacher: '郑老师',   location: '514教室（西校区）', week: 9,  cls: 'both' },
-  { name: '电路-10',       day: '周六', time: '13:20-16:20', start: 5, end: 8,  teacher: '滕老师',   location: '404教室',           week: 9,  cls: 'one'  },
+    { name: '计算机基础-12', day: '周一', time: '9:00-12:00', start: 1, end: 4, teacher: '梁老师1', location: '421教室（西校区）', week: 9, cls: 'both' },
+    { name: '英语-12', day: '周一', time: '13:20-16:20', start: 5, end: 8, teacher: '耿老师', location: '421教室（西校区）', week: 9, cls: 'both' },
+    { name: '数字电子-4', day: '周三', time: '9:20-12:20', start: 1, end: 4, teacher: '刘老师13', location: '303教室', week: 9, cls: 'one' },
+    { name: '计算机基础-13', day: '周三', time: '13:40-16:40', start: 5, end: 8, teacher: '梁老师1', location: '514教室（西校区）', week: 9, cls: 'both' },
+    { name: '高数-14', day: '周五', time: '13:20-16:20', start: 5, end: 8, teacher: '郑老师', location: '514教室（西校区）', week: 9, cls: 'both' },
+    { name: '电路-10', day: '周六', time: '13:20-16:20', start: 5, end: 8, teacher: '滕老师', location: '404教室', week: 9, cls: 'one' },
+    { name: '电路-9', day: '周四', time: '17:00-20:00', start: 9, end: 11, teacher: '滕老师', location: '205教室', week: 9, cls: 'one' },
 
   // ===== 第10周 (9/14-9/20) · 真实课表 =====
-  { name: '英语-13',       day: '周一', time: '9:20-12:20',  start: 1, end: 4,  teacher: '耿老师',   location: '505教室',           week: 10, cls: 'both' },
-  { name: '电路-11',       day: '周二', time: '17:00-20:00', start: 9, end: 11, teacher: '滕老师',   location: '205教室',           week: 10, cls: 'one'  },
-  { name: '高数-15',       day: '周三', time: '13:20-16:20', start: 5, end: 8,  teacher: '郑老师',   location: '422教室（西校区）', week: 10, cls: 'both' },
-  { name: '计算机基础-14', day: '周五', time: '9:20-12:20',  start: 1, end: 4,  teacher: '梁老师1',  location: '513教室（西校区）', week: 10, cls: 'both' },
-  { name: '数字电子-5',    day: '周日', time: '9:00-12:00',  start: 1, end: 4,  teacher: '刘老师13', location: '203教室',           week: 10, cls: 'one'  },
+    { name: '英语-13', day: '周一', time: '9:20-12:20', start: 1, end: 4, teacher: '耿老师', location: '505教室', week: 10, cls: 'both' },
+    { name: '电路-11', day: '周一', time: '17:00-20:00', start: 9, end: 11, teacher: '滕老师', location: '205教室', week: 10, cls: 'one' },
+    { name: '高数-15', day: '周三', time: '13:40-16:40', start: 5, end: 8, teacher: '郑老师', location: '422教室（西校区）', week: 10, cls: 'both' },
+    { name: '计算机基础-14', day: '周五', time: '9:20-12:20', start: 1, end: 4, teacher: '梁老师1', location: '513教室（西校区）', week: 10, cls: 'both' },
+    { name: '数字电子-5', day: '周日', time: '9:20-12:20', start: 1, end: 4, teacher: '刘老师13', location: '203教室', week: 10, cls: 'one' },
 
   // ===== 第11周 (9/21-9/27) · 真实课表 =====
-  { name: '高数-16',       day: '周一', time: '9:00-12:00',  start: 1, end: 4,  teacher: '郑老师',   location: '420教室（西校区）', week: 11, cls: 'both' },
-  { name: '电路-12',       day: '周二', time: '17:00-20:00', start: 9, end: 11, teacher: '滕老师',   location: '205教室',           week: 11, cls: 'one'  },
-  { name: '数字电子-6',    day: '周三', time: '9:00-12:00',  start: 1, end: 4,  teacher: '刘老师13', location: '401教室',           week: 11, cls: 'one'  },
-  { name: '计算机基础-15', day: '周四', time: '9:20-12:20',  start: 1, end: 4,  teacher: '梁老师1',  location: '514教室（西校区）', week: 11, cls: 'both' },
-  { name: '英语-14',       day: '周六', time: '13:20-16:20', start: 5, end: 8,  teacher: '耿老师',   location: '420教室（西校区）', week: 11, cls: 'both' },
-  { name: '数字电子-7',    day: '周日', time: '13:20-16:20', start: 5, end: 8,  teacher: '刘老师13', location: '402教室',           week: 11, cls: 'one'  },
+    { name: '高数-16', day: '周一', time: '9:00-12:00', start: 1, end: 4, teacher: '郑老师', location: '420教室（西校区）', week: 11, cls: 'both' },
+    { name: '数字电子-6', day: '周三', time: '9:20-12:20', start: 1, end: 4, teacher: '刘老师13', location: '401教室', week: 11, cls: 'one' },
+    { name: '电路-12', day: '周二', time: '17:30-20:30', start: 9, end: 11, teacher: '滕老师', location: '205教室', week: 11, cls: 'one' },
+    { name: '英语-14', day: '周六', time: '13:40-16:40', start: 5, end: 8, teacher: '耿老师', location: '420教室（西校区）', week: 11, cls: 'both' },
+    { name: '计算机基础-15', day: '周四', time: '9:20-12:20', start: 1, end: 4, teacher: '梁老师1', location: '514教室（西校区）', week: 11, cls: 'both' },
+    { name: '数字电子-7', day: '周日', time: '9:20-12:20', start: 1, end: 4, teacher: '刘老师13', location: '402教室', week: 11, cls: 'one' },
 
   // ===== 第12周 (9/28-10/4) · 真实课表 =====
-  { name: '高数-17',       day: '周一', time: '9:00-12:00',  start: 1, end: 4, teacher: '郑老师',   location: '422教室（西校区）', week: 12, cls: 'both' },
-  { name: '英语-15',       day: '周二', time: '13:20-16:20', start: 5, end: 8, teacher: '耿老师',   location: '422教室（西校区）', week: 12, cls: 'both' },
-  { name: '计算机基础-16', day: '周三', time: '13:40-16:40', start: 5, end: 8, teacher: '梁老师1',  location: '514教室（西校区）', week: 12, cls: 'both' },
+    { name: '高数-17', day: '周一', time: '9:00-12:00', start: 1, end: 4, teacher: '郑老师', location: '422教室（西校区）', week: 12, cls: 'both' },
+    { name: '英语-15', day: '周一', time: '13:40-16:40', start: 5, end: 8, teacher: '耿老师', location: '422教室（西校区）', week: 12, cls: 'both' },
+    { name: '计算机基础-16', day: '周二', time: '13:40-16:40', start: 5, end: 8, teacher: '梁老师1', location: '514教室（西校区）', week: 12, cls: 'both' },
+    { name: '数字电子-8', day: '周四', time: '9:20-12:20', start: 1, end: 4, teacher: '刘老师13', location: '304教室', week: 12, cls: 'one' },
 
   // ===== 第13周 (10/5-10/11) · 真实课表 =====
-  { name: '数字电子-8',    day: '周四', time: '9:20-12:20',  start: 1, end: 4, teacher: '刘老师13', location: '304教室',           week: 13, cls: 'one'  },
-  { name: '数字电子-9',    day: '周五', time: '9:20-12:20',  start: 1, end: 4, teacher: '刘老师13', location: '502教室',           week: 13, cls: 'one'  },
-  { name: '计算机基础-17', day: '周六', time: '9:00-12:00',  start: 1, end: 4, teacher: '梁老师1',  location: '422教室（西校区）', week: 13, cls: 'both' },
-  { name: '数字电子-10',   day: '周日', time: '13:20-16:20', start: 5, end: 8, teacher: '刘老师13', location: '404教室',           week: 13, cls: 'one'  },
+    { name: '高数-18', day: '周一', time: '9:00-12:00', start: 1, end: 4, teacher: '郑老师', location: '513教室（西校区）', week: 13, cls: 'both' },
+    { name: '数字电子-11', day: '周三', time: '9:20-12:20', start: 1, end: 4, teacher: '刘老师13', location: '401教室', week: 13, cls: 'one' },
+    { name: '数字电子-9', day: '周五', time: '9:00-12:00', start: 1, end: 4, teacher: '刘老师13', location: '502教室', week: 13, cls: 'one' },
+    { name: '计算机基础-17', day: '周五', time: '13:20-16:20', start: 5, end: 8, teacher: '梁老师1', location: '422教室（西校区）', week: 13, cls: 'both' },
+    { name: '数字电子-10', day: '周日', time: '13:20-16:20', start: 5, end: 8, teacher: '刘老师13', location: '404教室', week: 13, cls: 'one' },
 
   // ===== 第14周 (10/12-10/18) · 真实课表 =====
-  { name: '高数-18',       day: '周一', time: '9:20-12:20',  start: 1, end: 4,  teacher: '郑老师',   location: '513教室（西校区）', week: 14, cls: 'both' },
-  { name: '数字电子-11',   day: '周三', time: '9:00-12:00',  start: 1, end: 4,  teacher: '刘老师13', location: '401教室',           week: 14, cls: 'one'  },
-  { name: '计算机基础-18', day: '周四', time: '13:40-16:40', start: 5, end: 8,  teacher: '梁老师1',  location: '513教室（西校区）', week: 14, cls: 'both' },
-  { name: '数字电子-12',   day: '周五', time: '17:00-20:00', start: 9, end: 11, teacher: '刘老师13', location: '205教室',           week: 14, cls: 'one'  },
-  { name: '英语-16',       day: '周日', time: '13:40-16:40', start: 5, end: 8,  teacher: '耿老师',   location: '307教室',           week: 14, cls: 'both' },
+    { name: '数字电子-12', day: '周五', time: '17:00-20:00', start: 9, end: 11, teacher: '刘老师13', location: '205教室', week: 14, cls: 'one' },
+    { name: '计算机基础-18', day: '周四', time: '13:40-16:40', start: 5, end: 8, teacher: '梁老师1', location: '513教室（西校区）', week: 14, cls: 'both' },
+    { name: '英语-16', day: '周日', time: '13:40-16:40', start: 5, end: 8, teacher: '耿老师', location: '307教室', week: 14, cls: 'both' },
 ];

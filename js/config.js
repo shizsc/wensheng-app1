@@ -46,7 +46,7 @@ export const FETCH_TIMEOUT = 4000;
  * 默认课程数据“内容”版本。内容变更才 +1，触发**合并**（不清库）。
  * 与 IndexedDB 的 DB_VERSION（表结构版本）是两个独立概念，命名不得混用。
  */
-export const DATA_VERSION = 8;
+export const DATA_VERSION = 9;
 
 /** IndexedDB 数据库名 / 表结构版本 / 对象仓库名 */
 export const DB_NAME = 'CourseScheduleDB';
