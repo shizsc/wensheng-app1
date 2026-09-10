@@ -86,6 +86,11 @@ body {
   color: var(--text-1);
   -webkit-font-smoothing: antialiased;
   transition: background .35s ease, color .35s ease;
+  /* BugFix v1.3.2：body 改为 flex 列容器，让 #app 与 .tab-bar 共占 viewport 高度，
+     修复 #app 用 height:100vh 撑满 body 后 .tab-bar 被 overflow:hidden 裁掉的布局 bug。
+     .modal/.toast/.reminder-banner 均为 position:fixed 不参与文档流，不受影响。 */
+  display: flex;
+  flex-direction: column;
 }
 button, input, select { font-family: inherit; }
 
@@ -93,8 +98,11 @@ button, input, select { font-family: inherit; }
 #app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
+  /* BugFix v1.3.2：原 height:100vh 会与 body 的 100% 高度完全重合，
+     把兄弟节点 .tab-bar 挤出可视区。改为 flex:1 让 #app 与 .tab-bar 共享 body 高度。
+     min-height:0 是 flex 子项收缩的必要前提，否则 .page 内的滚动会失效。 */
+  flex: 1 1 auto;
+  min-height: 0;
   padding-bottom: var(--safe-bottom);
   overflow: hidden;
   position: relative;
