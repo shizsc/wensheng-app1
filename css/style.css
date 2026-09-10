@@ -35,6 +35,8 @@
   --shadow-card-hover: 0 2px 4px rgba(24,28,60,.06), 0 14px 34px rgba(24,28,60,.14);
   --shadow-float: 0 12px 32px rgba(99,102,241,.35);
   --tabbar-bg: rgba(255,255,255,.92);
+  /* 安全区：优先取 Android 原生注入的真实系统栏高度，浏览器端回退到 env() */
+  --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
@@ -109,7 +111,7 @@ button, input, select { font-family: inherit; }
 
 /* ================= 页头（渐变大标题） ================= */
 .page-head {
-  padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px;
+  padding: calc(14px + var(--safe-top)) 16px 14px;
   background: var(--grad-main-soft);
   position: relative;
   transition: background .35s ease;
@@ -494,7 +496,9 @@ body.dark .b-tag.one  { background: rgba(56,189,248,.20); color: #BAE6FD; }
 
 /* ================= 底部 Tab 栏 ================= */
 .tab-bar {
-  flex: 0 0 62px;
+  /* 用 auto + min-height 而非固定 62px：安全区变高时高度能跟着撑开，内容不会被压扁 */
+  flex: 0 0 auto;
+  min-height: 62px;
   background: var(--tabbar-bg);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
